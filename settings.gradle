@@ -1,2 +1,5 @@
 rootProject.name = 'sei-help'
 
+include 'sei-help-service'
+include 'sei-help-api'
+
