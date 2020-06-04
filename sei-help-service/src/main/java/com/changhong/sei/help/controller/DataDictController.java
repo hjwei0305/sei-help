@@ -1,5 +1,6 @@
 package com.changhong.sei.help.controller;
 
+import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.help.api.DataDictApi;
 import com.changhong.sei.help.dto.DataDictDto;
 import com.changhong.sei.help.entity.DataDict;
@@ -10,6 +11,8 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import io.swagger.annotations.Api;
+
+import java.util.List;
 
 /**
  * 数据字典(DataDict)控制类
@@ -33,4 +36,25 @@ public class DataDictController extends BaseEntityController<DataDict, DataDictD
     }
 
 
+    /**
+     * 获取所有业务实体
+     *
+     * @return 业务实体清单
+     */
+    @Override
+    public ResultData<List<DataDictDto>> findAll() {
+        List<DataDict> data = service.findAll();
+        return ResultData.success(convertToDtos(data));
+    }
+
+    /**
+     * 获取所有未冻结的业务实体
+     *
+     * @return 业务实体清单
+     */
+    @Override
+    public ResultData<List<DataDictDto>> findAllUnfrozen() {
+        List<DataDict> data = service.findAllUnfrozen();
+        return ResultData.success(convertToDtos(data));
+    }
 }
