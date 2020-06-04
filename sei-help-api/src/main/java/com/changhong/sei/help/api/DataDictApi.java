@@ -1,5 +1,6 @@
 package com.changhong.sei.help.api;
 
+import com.changhong.sei.core.api.FindAllApi;
 import com.changhong.sei.help.dto.DataDictDto;
 import com.changhong.sei.core.api.BaseEntityApi;
 import io.swagger.annotations.ApiOperation;
@@ -16,6 +17,6 @@ import javax.validation.Valid;
  */
 @Valid
 @FeignClient(name = "sei-help", path = "dataDict")
-public interface DataDictApi extends BaseEntityApi<DataDictDto> {
+public interface DataDictApi extends BaseEntityApi<DataDictDto>, FindAllApi<DataDictDto> {
 
 }
