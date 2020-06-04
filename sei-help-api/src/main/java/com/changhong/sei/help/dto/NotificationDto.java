@@ -2,6 +2,8 @@ package com.changhong.sei.help.dto;
 
 import java.util.Date;
 import com.changhong.sei.core.dto.BaseEntityDto;
+import com.changhong.sei.core.dto.serializer.EnumJsonSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -24,11 +26,13 @@ private static final long serialVersionUID = 263405606088836570L;
     /**
      * 动作: REPLY, COMMENT, COLLECT
      */
+    @JsonSerialize(using = EnumJsonSerializer.class)
     @ApiModelProperty(value = "动作:REPLY,COMMENT,COLLECT")
-    private String action;
+    private NotificationAction action;
     /**
      * 创建时间
      */
+    @NotNull
     @ApiModelProperty(value = "创建时间")
     private Date inTime;
     /**
@@ -39,28 +43,50 @@ private static final long serialVersionUID = 263405606088836570L;
     /**
      * 通知对象ID
      */
+    @NotBlank
     @ApiModelProperty(value = "通知对象ID")
     private String targetUserId;
     /**
      * 话题id
      */
+    @NotBlank
     @ApiModelProperty(value = "话题id")
     private String topicId;
+
+    /**
+     * 话题标题
+     */
+    @ApiModelProperty(value = "话题标题")
+    private String title;
+
+    /**
+     * 转载文章的链接
+     */
+    @ApiModelProperty(value = "转载文章的链接")
+    private String url;
+
+    /**
+     * 前端显示用户
+     */
+    @ApiModelProperty(value = "前端显示用户")
+    private String userInfo;
+
     /**
      * 创建人id
      */
+    @NotBlank
     @ApiModelProperty(value = "创建人id")
     private String userId;
 
-        
-    public String getAction() {
+
+    public NotificationAction getAction() {
         return action;
     }
 
-    public void setAction(String action) {
+    public void setAction(NotificationAction action) {
         this.action = action;
     }
-        
+
     public Date getInTime() {
         return inTime;
     }
@@ -101,4 +127,27 @@ private static final long serialVersionUID = 263405606088836570L;
         this.userId = userId;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getUserInfo() {
+        return userInfo;
+    }
+
+    public void setUserInfo(String userInfo) {
+        this.userInfo = userInfo;
+    }
 }

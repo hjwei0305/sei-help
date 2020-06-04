@@ -1,15 +1,16 @@
-package com.changhong.sei.help.entity.controller;
+package com.changhong.sei.help.controller;
 
-import com.changhong.sei.help.api.TopicApi;
-import com.changhong.sei.help.dto.TopicDto;
-import com.changhong.sei.help.entity.entity.Topic;
-import com.changhong.sei.help.entity.service.TopicService;
 import com.changhong.sei.core.controller.BaseEntityController;
 import com.changhong.sei.core.service.BaseEntityService;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.changhong.sei.help.api.TopicApi;
+import com.changhong.sei.help.dto.TopicDto;
+import com.changhong.sei.help.entity.Topic;
+import com.changhong.sei.help.service.TopicService;
 import io.swagger.annotations.Api;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 话题(Topic)控制类

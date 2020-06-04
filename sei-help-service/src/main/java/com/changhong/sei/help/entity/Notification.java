@@ -1,13 +1,15 @@
 package com.changhong.sei.help.entity;
 
 import java.util.Date;
+
+import com.changhong.sei.core.dto.serializer.EnumJsonSerializer;
 import com.changhong.sei.core.entity.BaseAuditableEntity;
+import com.changhong.sei.help.dto.NotificationAction;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**
@@ -25,8 +27,10 @@ private static final long serialVersionUID = 827150958670329242L;
     /**
      * 动作: REPLY, COMMENT, COLLECT
      */
+    @Enumerated
+    @JsonSerialize(using = EnumJsonSerializer.class)
     @Column(name = "action")
-    private String action;
+    private NotificationAction action;
     /**
      * 创建时间
      */
@@ -45,23 +49,24 @@ private static final long serialVersionUID = 827150958670329242L;
     /**
      * 话题id
      */
-    @Column(name = "topic_id")
-    private String topicId;
+    @ManyToOne
+    @JoinColumn(name = "topic_id",referencedColumnName = "id")
+    private Topic topic;
     /**
      * 创建人id
      */
     @Column(name = "user_id")
     private String userId;
 
-        
-    public String getAction() {
+
+    public NotificationAction getAction() {
         return action;
     }
 
-    public void setAction(String action) {
+    public void setAction(NotificationAction action) {
         this.action = action;
     }
-        
+
     public Date getInTime() {
         return inTime;
     }
@@ -85,15 +90,15 @@ private static final long serialVersionUID = 827150958670329242L;
     public void setTargetUserId(String targetUserId) {
         this.targetUserId = targetUserId;
     }
-        
-    public String getTopicId() {
-        return topicId;
+
+    public Topic getTopic() {
+        return topic;
     }
 
-    public void setTopicId(String topicId) {
-        this.topicId = topicId;
+    public void setTopic(Topic topicId) {
+        this.topic = topicId;
     }
-        
+
     public String getUserId() {
         return userId;
     }

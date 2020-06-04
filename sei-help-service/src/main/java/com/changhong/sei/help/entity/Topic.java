@@ -1,4 +1,4 @@
-package com.changhong.sei.help.entity.entity;
+package com.changhong.sei.help.entity;
 
 import java.util.Date;
 import com.changhong.sei.core.entity.BaseAuditableEntity;

@@ -1,7 +1,7 @@
-package com.changhong.sei.help.entity.dao;
+package com.changhong.sei.help.dao;
 
-import com.changhong.sei.help.entity.entity.Topic;
 import com.changhong.sei.core.dao.BaseEntityDao;
+import com.changhong.sei.help.entity.Topic;
 import org.springframework.stereotype.Repository;
 
 /**

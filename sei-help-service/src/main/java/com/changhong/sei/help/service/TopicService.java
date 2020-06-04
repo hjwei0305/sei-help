@@ -1,9 +1,9 @@
-package com.changhong.sei.help.entity.service;
+package com.changhong.sei.help.service;
 
-import com.changhong.sei.help.entity.entity.Topic;
-import com.changhong.sei.help.entity.dao.TopicDao;
 import com.changhong.sei.core.dao.BaseEntityDao;
 import com.changhong.sei.core.service.BaseEntityService;
+import com.changhong.sei.help.dao.TopicDao;
+import com.changhong.sei.help.entity.Topic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
