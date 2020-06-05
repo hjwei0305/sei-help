@@ -5,9 +5,7 @@ import com.changhong.sei.core.entity.BaseAuditableEntity;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**
@@ -30,8 +28,9 @@ private static final long serialVersionUID = 755866235997215253L;
     /**
      * 评论id
      */
-    @Column(name = "comment_id")
-    private String commentId;
+    @ManyToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "comment_id",referencedColumnName = "id")
+    private Comment comment;
     /**
      * 创建时间
      */
@@ -56,15 +55,15 @@ private static final long serialVersionUID = 755866235997215253L;
     public void setAnonymous(Boolean anonymous) {
         this.anonymous = anonymous;
     }
-        
-    public String getCommentId() {
-        return commentId;
+
+    public Comment getComment() {
+        return comment;
     }
 
-    public void setCommentId(String commentId) {
-        this.commentId = commentId;
+    public void setComment(Comment comment) {
+        this.comment = comment;
     }
-        
+
     public Date getInTime() {
         return inTime;
     }

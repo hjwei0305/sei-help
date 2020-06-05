@@ -29,6 +29,7 @@ private static final long serialVersionUID = 930996347659530814L;
     /**
      * 评论id
      */
+    @NotBlank
     @ApiModelProperty(value = "评论id")
     private String commentId;
     /**
@@ -36,11 +37,6 @@ private static final long serialVersionUID = 930996347659530814L;
      */
     @ApiModelProperty(value = "创建时间")
     private Date inTime;
-    /**
-     * 用户id
-     */
-    @ApiModelProperty(value = "用户id")
-    private String userId;
     /**
      * 用户信息
      */
@@ -70,14 +66,6 @@ private static final long serialVersionUID = 930996347659530814L;
 
     public void setInTime(Date inTime) {
         this.inTime = inTime;
-    }
-        
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
         
     public String getUserInfo() {

@@ -24,7 +24,7 @@ public class CategoryDto extends BaseEntityDto {
 
     private static final long serialVersionUID = 332493700917563622L;
 
-    public static final String FIELD_CATEGORY_TYPE = "categoryType";
+    public static final String FIELD_CATEGORY_TYPE = "type";
     public static final String FIELD_PARENT_ID = "parentId";
 
     /**
