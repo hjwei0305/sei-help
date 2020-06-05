@@ -47,14 +47,17 @@ public class CategoryDto extends BaseEntityDto {
      * 是否删除
      */
     @ApiModelProperty(value = "是否删除")
-    private Boolean del;
+    private Boolean deleted = Boolean.FALSE;
     /**
      * 排序
      */
     @ApiModelProperty(value = "排序")
-    private Integer rank;
-    
-    
+    private Integer rank = 0;
+
+    /**
+     * 父节点id
+     */
+    @ApiModelProperty(value = "父节点Id")
     private String parentId;
 
         
@@ -82,14 +85,14 @@ public class CategoryDto extends BaseEntityDto {
         this.type = type;
     }
 
-    public Boolean getDel() {
-        return del;
+    public Boolean getDeleted() {
+        return deleted;
     }
 
-    public void setDel(Boolean del) {
-        this.del = del;
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
-        
+
     public Integer getRank() {
         return rank;
     }

@@ -29,7 +29,7 @@ private static final long serialVersionUID = 447182376380172582L;
      * 排序
      */
     @ApiModelProperty(value = "排序")
-    private Integer rank;
+    private Integer rank = 0;
     /**
      * 电话号
      */
