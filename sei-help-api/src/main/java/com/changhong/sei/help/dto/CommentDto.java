@@ -9,7 +9,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import java.beans.Transient;
 import java.io.Serializable;
+import java.util.HashSet;
 
 /**
  * 评论(Comment)DTO类
@@ -23,44 +25,58 @@ private static final long serialVersionUID = -55697659277985866L;
     /**
      * 评论内容
      */
+    @NotBlank
     @ApiModelProperty(value = "评论内容")
     private String content;
     /**
-     * 话题id
+     * 话题
      */
-    @ApiModelProperty(value = "话题id")
-    private String topicId;
+    @ApiModelProperty(value = "话题")
+    private TopicDto topic;
     /**
      * 是否匿名
      */
     @ApiModelProperty(value = "是否匿名")
-    private Boolean anonymous;
+    private Boolean anonymous = Boolean.FALSE;
     /**
      * 前端显示用户
      */
     @ApiModelProperty(value = "前端显示用户")
     private String userInfo;
     /**
+     * 上层评论id
+     */
+    @ApiModelProperty(value = "上层评论id")
+    private String parentId;
+    /**
      * 上层评论
      */
     @ApiModelProperty(value = "上层评论")
-    private String parentId;
+    private CommentDto parentComment;
     /**
      * 附件数量
      */
     @ApiModelProperty(value = "附件数量")
-    private Integer docCount;
+    private Integer docCount = 0;
     /**
      * 是否加精
      */
     @ApiModelProperty(value = "是否加精")
-    private Boolean good;
+    private Boolean good = Boolean.FALSE;
     /**
      * 点赞数量
      */
     @ApiModelProperty(value = "点赞数量")
-    private Integer likeCount;
-
+    private Integer likeCount = 0;
+    /**
+     * 文档id列表
+     */
+    @ApiModelProperty(value = "文档id列表")
+    private HashSet<String> docIds;
+    /**
+     * 当前用户是否已经点赞
+     */
+    private Boolean liked = Boolean.FALSE;
         
     public String getContent() {
         return content;
@@ -68,14 +84,6 @@ private static final long serialVersionUID = -55697659277985866L;
 
     public void setContent(String content) {
         this.content = content;
-    }
-        
-    public String getTopicId() {
-        return topicId;
-    }
-
-    public void setTopicId(String topicId) {
-        this.topicId = topicId;
     }
         
     public Boolean getAnonymous() {
@@ -126,4 +134,35 @@ private static final long serialVersionUID = -55697659277985866L;
         this.likeCount = likeCount;
     }
 
+    public HashSet<String> getDocIds() {
+        return docIds;
+    }
+
+    public void setDocIds(HashSet<String> docIds) {
+        this.docIds = docIds;
+    }
+
+    public Boolean getLiked() {
+        return liked;
+    }
+
+    public void setLiked(Boolean liked) {
+        this.liked = liked;
+    }
+
+    public TopicDto getTopic() {
+        return topic;
+    }
+
+    public void setTopic(TopicDto topic) {
+        this.topic = topic;
+    }
+
+    public CommentDto getParentComment() {
+        return parentComment;
+    }
+
+    public void setParentComment(CommentDto parentComment) {
+        this.parentComment = parentComment;
+    }
 }

@@ -196,6 +196,10 @@ private static final long serialVersionUID = -99759720216322498L;
     }
         
     public String getUserInfo() {
+        Boolean anonymous = getAnonymous();
+        if (anonymous != null && anonymous) {
+            return "匿名";
+        }
         return userInfo;
     }
 

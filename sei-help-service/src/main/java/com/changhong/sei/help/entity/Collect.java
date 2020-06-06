@@ -5,9 +5,7 @@ import com.changhong.sei.core.entity.BaseAuditableEntity;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**
@@ -30,8 +28,9 @@ private static final long serialVersionUID = -23882721203709158L;
     /**
      * 话题id
      */
-    @Column(name = "topic_id")
-    private String topicId;
+    @ManyToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "topic_id",referencedColumnName = "id")
+    private Topic topic;
     /**
      * 用户id
      */
@@ -51,15 +50,15 @@ private static final long serialVersionUID = -23882721203709158L;
     public void setInTime(Date inTime) {
         this.inTime = inTime;
     }
-        
-    public String getTopicId() {
-        return topicId;
+
+    public Topic getTopic() {
+        return topic;
     }
 
-    public void setTopicId(String topicId) {
-        this.topicId = topicId;
+    public void setTopic(Topic topic) {
+        this.topic = topic;
     }
-        
+
     public String getUserId() {
         return userId;
     }

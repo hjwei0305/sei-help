@@ -87,13 +87,17 @@ private static final long serialVersionUID = 551976767612107434L;
     }
         
     public String getUserInfo() {
+        Boolean anonymous = getAnonymous();
+        if (anonymous != null && anonymous) {
+            return "匿名";
+        }
         return userInfo;
     }
 
     public void setUserInfo(String userInfo) {
         this.userInfo = userInfo;
     }
-        
+
     public String getParentId() {
         return parentId;
     }
@@ -101,7 +105,7 @@ private static final long serialVersionUID = 551976767612107434L;
     public void setParentId(String parentId) {
         this.parentId = parentId;
     }
-        
+
     public Integer getDocCount() {
         return docCount;
     }

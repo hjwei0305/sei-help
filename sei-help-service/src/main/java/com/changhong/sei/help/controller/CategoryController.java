@@ -122,6 +122,7 @@ public class CategoryController extends BaseEntityController<Category, CategoryD
     public ResultData<List<CategoryDto>> topicList() {
         Search search = Search.createSearch();
         search.addFilter(new SearchFilter(CategoryDto.FIELD_CATEGORY_TYPE, CategoryType.tab));
+        search.addFilter(new SearchFilter(CategoryDto.FIELD_DELETED, Boolean.FALSE));
         search.addSortOrder(SearchOrder.asc(IRank.RANK));
         List<Category> list = service.findByFilters(search);
         return ResultData.success(convertToDtos(list));
@@ -136,6 +137,7 @@ public class CategoryController extends BaseEntityController<Category, CategoryD
     public ResultData<List<CategoryDto>> bizList(@PathVariable("parentId") String parentId) {
         Search search = Search.createSearch();
         search.addFilter(new SearchFilter(CategoryDto.FIELD_CATEGORY_TYPE, CategoryType.biz));
+        search.addFilter(new SearchFilter(CategoryDto.FIELD_DELETED, Boolean.FALSE));
         search.addFilter(new SearchFilter(CategoryDto.FIELD_PARENT_ID, parentId));
         search.addSortOrder(SearchOrder.asc(IRank.RANK));
         List<Category> list = service.findByFilters(search);
@@ -151,6 +153,7 @@ public class CategoryController extends BaseEntityController<Category, CategoryD
     public ResultData<List<CategoryDto>> statisList() {
         Search search = Search.createSearch();
         search.addFilter(new SearchFilter(CategoryDto.FIELD_CATEGORY_TYPE, CategoryType.statis));
+        search.addFilter(new SearchFilter(CategoryDto.FIELD_DELETED, Boolean.FALSE));
         search.addSortOrder(SearchOrder.asc(IRank.RANK));
         List<Category> list = service.findByFilters(search);
         return ResultData.success(convertToDtos(list));

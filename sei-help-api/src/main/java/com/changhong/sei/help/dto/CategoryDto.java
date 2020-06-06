@@ -26,6 +26,7 @@ public class CategoryDto extends BaseEntityDto {
 
     public static final String FIELD_CATEGORY_TYPE = "type";
     public static final String FIELD_PARENT_ID = "parentId";
+    public static final String FIELD_DELETED = "deleted";
 
     /**
      * 代码

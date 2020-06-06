@@ -27,10 +27,10 @@ private static final long serialVersionUID = 595828152261039802L;
     @ApiModelProperty(value = "创建时间")
     private Date inTime;
     /**
-     * 话题id
+     * 话题
      */
-    @ApiModelProperty(value = "话题id")
-    private String topicId;
+    @ApiModelProperty(value = "话题")
+    private TopicDto topic;
     /**
      * 用户id
      */
@@ -50,14 +50,7 @@ private static final long serialVersionUID = 595828152261039802L;
     public void setInTime(Date inTime) {
         this.inTime = inTime;
     }
-        
-    public String getTopicId() {
-        return topicId;
-    }
 
-    public void setTopicId(String topicId) {
-        this.topicId = topicId;
-    }
         
     public String getUserId() {
         return userId;
@@ -75,4 +68,11 @@ private static final long serialVersionUID = 595828152261039802L;
         this.userInfo = userInfo;
     }
 
+    public TopicDto getTopic() {
+        return topic;
+    }
+
+    public void setTopic(TopicDto topic) {
+        this.topic = topic;
+    }
 }
