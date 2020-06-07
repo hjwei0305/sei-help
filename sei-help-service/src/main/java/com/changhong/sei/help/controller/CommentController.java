@@ -71,8 +71,26 @@ public class CommentController extends BaseEntityController<Comment, CommentDto>
         String topicId = dto.getTopic().getId();
         String content = dto.getContent();
         String parentId = dto.getParentId();
+        Set<String> docIds = dto.getDocIds();
         SessionUser user = ContextUtil.getSessionUser();
         String userId = user.getUserId();
+        //更新
+        if (StringUtils.isNotEmpty(dto.getId())){
+            Comment savedComment = commentService.findOne(dto.getId());
+            if (Objects.isNull(savedComment)) {
+                return ResultData.fail("00004");
+            }
+            if (Objects.equals(userId, savedComment.getCreatorId())){
+                return ResultData.fail("不能修改别人的评论");
+            }
+            //删除以前的文档
+            if (CollectionUtils.isEmpty(docIds)) {
+                ResultData<String> documentResult =documentManager.deleteBusinessInfos(dto.getId());
+                if (!documentResult.successful()){
+                    return ResultData.fail(documentResult.getMessage());
+                }
+            }
+        }
         Topic topic = topicService.findOne(topicId);
         if (Objects.isNull(topic)) {
             return ResultData.fail("00005");
@@ -109,7 +127,6 @@ public class CommentController extends BaseEntityController<Comment, CommentDto>
         }
         //设置前端显示名称
         dto.setUserInfo(user.getUserName() + "[" + user.getAccount() + "]");
-        Set<String> docIds = dto.getDocIds();
         dto.setDocCount(Objects.nonNull(docIds) ? docIds.size() : 0);
         // 更新话题的评论数
         topic.setCommentCount(topic.getCommentCount() + 1);
@@ -213,7 +230,6 @@ public class CommentController extends BaseEntityController<Comment, CommentDto>
      * @return
      */
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public ResultData<String> good(String commentId) {
         Comment comment = commentService.findOne(commentId);
         if (Objects.isNull(comment)) {
@@ -224,7 +240,6 @@ public class CommentController extends BaseEntityController<Comment, CommentDto>
         }else {
             comment.setGood(!comment.getGood());
         }
-
         commentService.save(comment);
         return ResultData.success("00001");
     }

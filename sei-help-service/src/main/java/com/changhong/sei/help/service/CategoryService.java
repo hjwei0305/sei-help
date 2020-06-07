@@ -1,21 +1,21 @@
 package com.changhong.sei.help.service;
 
 import com.changhong.sei.core.dto.ResultData;
+import com.changhong.sei.core.dto.serach.SearchFilter;
 import com.changhong.sei.core.service.bo.OperateResult;
 import com.changhong.sei.core.service.bo.OperateResultWithData;
 import com.changhong.sei.help.entity.Category;
 import com.changhong.sei.help.dao.CategoryDao;
 import com.changhong.sei.core.dao.BaseEntityDao;
 import com.changhong.sei.core.service.BaseEntityService;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundValueOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -72,7 +72,7 @@ public class CategoryService extends BaseEntityService<Category> {
     /**
      * 获取分类缓存
      */
-    protected Map<String, String> getCategoryCacheMap() {
+    public Map<String, String> getCategoryCacheMap() {
         BoundValueOperations operations = redisTemplate.boundValueOps(REDIS_KEY_CATEGORY);
         Map<String, String> map = (Map<String, String>) operations.get();
         if (Objects.isNull(map) || map.isEmpty()) {
@@ -82,6 +82,34 @@ public class CategoryService extends BaseEntityService<Category> {
             operations.set(map);
         }
         return map;
+    }
+
+    /**
+     * 根据id列表获取分类map
+     * @param ids id列表
+     * @return 分类map
+     */
+    public Map<String, Category> getCategory(String... ids) {
+        Map<String, Category> categoryMap = null;
+        if (Objects.nonNull(ids) && ids.length > 0) {
+            Set<String> idSet = new HashSet<>();
+            for (String id : ids) {
+                if (!StringUtils.isEmpty(id)) {
+                    idSet.add(id);
+                }
+            }
+            if (!idSet.isEmpty()) {
+                List<Category> categoryList = findByFilter(new SearchFilter(Category.ID, idSet, SearchFilter.Operator.IN));
+                if (CollectionUtils.isNotEmpty(categoryList)) {
+                    categoryMap = categoryList.stream().collect(Collectors.toMap(Category::getId, o -> o));
+                }
+            }
+        }
+        if (Objects.isNull(categoryMap)) {
+            categoryMap = new HashMap<>();
+        }
+
+        return categoryMap;
     }
 
 }

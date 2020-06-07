@@ -13,4 +13,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CollectDao extends BaseEntityDao<Collect> {
 
+    /**
+     * 根据用户id和话题id查询
+     * @param userId 用户id
+     * @param topicId 话题id
+     * @return 收藏
+     */
+    Collect findByUserIdAndTopicId(String userId, String topicId);
+
 }

@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import java.io.Serializable;
+import java.util.HashSet;
 
 /**
  * 话题(Topic)DTO类
@@ -25,30 +26,33 @@ private static final long serialVersionUID = 841137223187422923L;
      * 收藏总数
      */
     @ApiModelProperty(value = "收藏总数")
-    private Integer collectCount;
+    private Integer collectCount = 0;
     /**
      * 评论总数
      */
     @ApiModelProperty(value = "评论总数")
-    private Integer commentCount;
+    private Integer commentCount = 0;
     /**
      * 主题内容
      */
+    @NotBlank
     @ApiModelProperty(value = "主题内容")
     private String content;
     /**
      * 是否加精
      */
     @ApiModelProperty(value = "是否加精")
-    private Boolean good;
+    private Boolean good = Boolean.FALSE;
     /**
      * 话题分类
      */
+    @NotBlank
     @ApiModelProperty(value = "话题分类")
     private String tabId;
     /**
      * 业务分类
      */
+    @NotBlank
     @ApiModelProperty(value = "业务分类")
     private String bizId;
     /**
@@ -59,13 +63,14 @@ private static final long serialVersionUID = 841137223187422923L;
     /**
      * 标题
      */
+    @NotBlank
     @ApiModelProperty(value = "标题")
     private String title;
     /**
      * 是否置顶
      */
     @ApiModelProperty(value = "是否置顶")
-    private Boolean top;
+    private Boolean top = Boolean.FALSE;
     /**
      * 分享链接
      */
@@ -75,15 +80,16 @@ private static final long serialVersionUID = 841137223187422923L;
      * 查看次数
      */
     @ApiModelProperty(value = "查看次数")
-    private Integer view;
+    private Integer view = 0;
     /**
      * 是否匿名
      */
     @ApiModelProperty(value = "是否匿名")
-    private Boolean anonymous;
+    private Boolean anonymous = Boolean.FALSE;
     /**
      * 前端显示用户
      */
+    @NotBlank
     @ApiModelProperty(value = "前端显示用户")
     private String userInfo;
     /**
@@ -96,6 +102,27 @@ private static final long serialVersionUID = 841137223187422923L;
      */
     @ApiModelProperty(value = "最近评论用户")
     private String lastCommentUserInfo;
+
+    /**
+     * 话题分类
+     */
+    @ApiModelProperty(value = "话题分类")
+    private String tabName;
+    /**
+     * 业务分类
+     */
+    @ApiModelProperty(value = "业务分类")
+    private String bizName;
+    /**
+     * 统计分类
+     */
+    @ApiModelProperty(value = "统计分类")
+    private String statisName;
+
+    /**
+     * 文档id列表
+     */
+    private HashSet<String> docIds;
 
         
     public Integer getCollectCount() {
@@ -218,4 +245,35 @@ private static final long serialVersionUID = 841137223187422923L;
         this.lastCommentUserInfo = lastCommentUserInfo;
     }
 
+    public HashSet<String> getDocIds() {
+        return docIds;
+    }
+
+    public void setDocIds(HashSet<String> docIds) {
+        this.docIds = docIds;
+    }
+
+    public String getTabName() {
+        return tabName;
+    }
+
+    public void setTabName(String tabName) {
+        this.tabName = tabName;
+    }
+
+    public String getBizName() {
+        return bizName;
+    }
+
+    public void setBizName(String bizName) {
+        this.bizName = bizName;
+    }
+
+    public String getStatisName() {
+        return statisName;
+    }
+
+    public void setStatisName(String statisName) {
+        this.statisName = statisName;
+    }
 }
