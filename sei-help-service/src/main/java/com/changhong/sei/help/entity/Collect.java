@@ -24,7 +24,7 @@ private static final long serialVersionUID = -23882721203709158L;
     /**
      * 话题id
      */
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn(name = "topic_id",referencedColumnName = "id")
     private Topic topic;
     /**

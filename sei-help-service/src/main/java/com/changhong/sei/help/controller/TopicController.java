@@ -133,7 +133,12 @@ public class TopicController extends BaseEntityController<Topic, TopicDto> imple
             return ResultData.fail("00005");
         }
         if (Objects.equals(userId, topic.getCreatorId())) {
-            super.delete(id);
+            ResultData result = super.delete(id);
+            if (!result.successful()){
+                return result;
+            }
+            commentService.deleteByTopicId(id);
+            collectService.deleteByTopicId(id);
             ResultData<String> docResult = documentManager.deleteBusinessInfos(id);
             if (!docResult.successful()) {
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();

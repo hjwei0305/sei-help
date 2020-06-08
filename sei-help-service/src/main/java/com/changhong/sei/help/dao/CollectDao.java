@@ -21,4 +21,9 @@ public interface CollectDao extends BaseEntityDao<Collect> {
      */
     Collect findByUserIdAndTopicId(String userId, String topicId);
 
+    /**
+     * 根据话题id删除
+     * @param topicId 话题id
+     */
+    void deleteByTopicId(String topicId);
 }

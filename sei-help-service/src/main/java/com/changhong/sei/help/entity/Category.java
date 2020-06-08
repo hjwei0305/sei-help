@@ -1,8 +1,10 @@
 package com.changhong.sei.help.entity;
 
 import com.changhong.sei.core.dto.IRank;
+import com.changhong.sei.core.dto.auth.IDataAuthEntity;
 import com.changhong.sei.core.dto.serializer.EnumJsonSerializer;
 import com.changhong.sei.core.entity.BaseAuditableEntity;
+import com.changhong.sei.core.entity.ICodeUnique;
 import com.changhong.sei.core.entity.ISoftDelete;
 import com.changhong.sei.help.dto.CategoryType;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -25,8 +27,9 @@ import java.io.Serializable;
 @Table(name = "category")
 @DynamicInsert
 @DynamicUpdate
-public class Category extends BaseAuditableEntity implements Serializable, IRank {
+public class Category extends BaseAuditableEntity implements Serializable, IRank, ICodeUnique, IDataAuthEntity {
 private static final long serialVersionUID = 886059933024602107L;
+
     /**
      * 代码
      */
@@ -62,20 +65,34 @@ private static final long serialVersionUID = 886059933024602107L;
     private String parentId;
 
         
+    @Override
     public String getCode() {
         return code;
     }
 
+    @Override
     public void setCode(String code) {
         this.code = code;
     }
         
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String getTenantCode() {
+        return null;
+    }
+
+    @Override
+    public void setTenantCode(String tenantCode) {
+
     }
 
     public CategoryType getType() {

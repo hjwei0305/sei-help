@@ -59,4 +59,12 @@ public class CollectService extends BaseEntityService<Collect> {
         dao.deleteById(id);
     }
 
+    /**
+     * 根据话题id删除全部收藏
+     * @param topicId 话题id
+     */
+    public void deleteByTopicId(String topicId) {
+        dao.deleteByTopicId(topicId);
+    }
+
 }

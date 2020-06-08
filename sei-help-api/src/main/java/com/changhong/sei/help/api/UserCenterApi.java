@@ -5,6 +5,7 @@ import com.changhong.sei.core.dto.serach.PageResult;
 import com.changhong.sei.help.dto.CollectDto;
 import com.changhong.sei.help.dto.CommentDto;
 import com.changhong.sei.help.dto.TopicDto;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +32,7 @@ public interface UserCenterApi {
      * @return 话题分页列表
      */
     @GetMapping("/{userId}/topics")
+    @ApiOperation(value = "获取指定用户创建的话题", notes = "获取指定用户创建的话题")
     ResultData<PageResult<TopicDto>> topics(@PathVariable String userId,
                                             @RequestParam(defaultValue = "1") Integer pageNo,
                                             @RequestParam(defaultValue = "15")Integer pageSize,
@@ -45,6 +47,7 @@ public interface UserCenterApi {
      * @return 评论分页列表
      */
     @GetMapping("/{userId}/comments")
+    @ApiOperation(value = "获取指定用户创建的评论", notes = "获取指定用户创建的评论")
     ResultData<PageResult<CommentDto>> comments(@PathVariable String userId,
                                                 @RequestParam(defaultValue = "1") Integer pageNo,
                                                 @RequestParam(defaultValue = "15")Integer pageSize,
@@ -59,6 +62,7 @@ public interface UserCenterApi {
      * @return 收藏分页列表
      */
     @GetMapping("/{userId}/collects")
+    @ApiOperation(value = "获取指定用户创建的收藏", notes = "获取指定用户创建的收藏")
     ResultData<PageResult<CollectDto>> collects(@PathVariable String userId,
                                                        @RequestParam(defaultValue = "1") Integer pageNo,
                                                        @RequestParam(defaultValue = "15")Integer pageSize,

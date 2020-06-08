@@ -37,4 +37,12 @@ public class CommentService extends BaseEntityService<Comment> {
         return dao.findByTopicIdOrderByCreatedDateAsc(topicId);
     }
 
+    /**
+     * 根据话题id删除全部评论
+     * @param topicId 话题id
+     */
+    public void deleteByTopicId(String topicId) {
+        dao.deleteByTopicId(topicId);
+    }
+
 }
