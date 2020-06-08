@@ -20,11 +20,7 @@ import java.io.Serializable;
 @DynamicUpdate
 public class Collect extends BaseAuditableEntity implements Serializable {
 private static final long serialVersionUID = -23882721203709158L;
-    /**
-     * 创建时间
-     */
-    @Column(name = "in_time")
-    private Date inTime;
+
     /**
      * 话题id
      */
@@ -42,14 +38,6 @@ private static final long serialVersionUID = -23882721203709158L;
     @Column(name = "user_info")
     private String userInfo;
 
-        
-    public Date getInTime() {
-        return inTime;
-    }
-
-    public void setInTime(Date inTime) {
-        this.inTime = inTime;
-    }
 
     public Topic getTopic() {
         return topic;

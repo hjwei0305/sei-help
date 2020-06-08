@@ -66,7 +66,6 @@ public class CollectController extends BaseEntityController<Collect, CollectDto>
         }
         dto.setUserId(userId);
         dto.setUserInfo(user.getUserName() + "[" + user.getAccount() + "]");
-        dto.setInTime(new Date());
         collectService.save(convertToEntity(dto));
         // 更新话题的收藏数
         topic.setCollectCount(topic.getCollectCount() + 1);

@@ -184,7 +184,6 @@ public class CommentController extends BaseEntityController<Comment, CommentDto>
         commentLike.setUserId(userId);
         commentLike.setUserInfo(user.getUserName() + "[" + user.getAccount() + "]");
         commentLike.setAnonymous(topic.getAnonymous());
-        commentLike.setInTime(new Date());
         commentLikeService.save(commentLike);
         // 更新话题的评论数
         comment.setLikeCount(comment.getLikeCount() == null ? 1 : comment.getLikeCount() + 1);

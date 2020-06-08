@@ -21,11 +21,7 @@ import java.io.Serializable;
 @ApiModel(description = "话题收藏DTO")
 public class CollectDto extends BaseEntityDto {
 private static final long serialVersionUID = 595828152261039802L;
-    /**
-     * 创建时间
-     */
-    @ApiModelProperty(value = "创建时间")
-    private Date inTime;
+
     /**
      * 话题
      */
@@ -42,15 +38,6 @@ private static final long serialVersionUID = 595828152261039802L;
      */
     @ApiModelProperty(value = "用户信息")
     private String userInfo;
-
-        
-    public Date getInTime() {
-        return inTime;
-    }
-
-    public void setInTime(Date inTime) {
-        this.inTime = inTime;
-    }
 
         
     public String getUserId() {

@@ -32,11 +32,6 @@ private static final long serialVersionUID = 755866235997215253L;
     @JoinColumn(name = "comment_id",referencedColumnName = "id")
     private Comment comment;
     /**
-     * 创建时间
-     */
-    @Column(name = "in_time")
-    private Date inTime;
-    /**
      * 用户id
      */
     @Column(name = "user_id")
@@ -62,14 +57,6 @@ private static final long serialVersionUID = 755866235997215253L;
 
     public void setComment(Comment comment) {
         this.comment = comment;
-    }
-
-    public Date getInTime() {
-        return inTime;
-    }
-
-    public void setInTime(Date inTime) {
-        this.inTime = inTime;
     }
         
     public String getUserId() {
