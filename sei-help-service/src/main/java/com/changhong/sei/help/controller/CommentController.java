@@ -84,12 +84,14 @@ public class CommentController extends BaseEntityController<Comment, CommentDto>
                 return ResultData.fail("不能修改别人的评论");
             }
             //删除以前的文档
-            if (CollectionUtils.isEmpty(docIds)) {
-                ResultData<String> documentResult =documentManager.deleteBusinessInfos(dto.getId());
-                if (!documentResult.successful()){
-                    return ResultData.fail(documentResult.getMessage());
-                }
+            ResultData<String> documentResult =documentManager.deleteBusinessInfos(dto.getId());
+            if (!documentResult.successful()){
+                return ResultData.fail(documentResult.getMessage());
             }
+            //只修改内容,是否匿名,文档数
+            savedComment.setContent(dto.getContent());
+            savedComment.setAnonymous(dto.getAnonymous());
+            dto = convertToDto(savedComment);
         }
         Topic topic = topicService.findOne(topicId);
         if (Objects.isNull(topic)) {
@@ -128,22 +130,26 @@ public class CommentController extends BaseEntityController<Comment, CommentDto>
         //设置前端显示名称
         dto.setUserInfo(user.getUserName() + "[" + user.getAccount() + "]");
         dto.setDocCount(Objects.nonNull(docIds) ? docIds.size() : 0);
-        // 更新话题的评论数
-        topic.setCommentCount(topic.getCommentCount() + 1);
-        //更新最后评论冗余信息
-        topic.setLastCommentTime(new Date());
-        if (dto.getAnonymous()){
-            topic.setLastCommentUserInfo("匿名");
-        }else {
-            topic.setLastCommentUserInfo(user.getUserName() + "[" + user.getAccount() + "]");
+        //新增时 修改评论数
+        if (!StringUtils.isNotEmpty(dto.getId())){
+            // 更新话题的评论数
+            topic.setCommentCount(topic.getCommentCount() + 1);
+            //更新最后评论冗余信息
+            topic.setLastCommentTime(new Date());
+            if (dto.getAnonymous()){
+                topic.setLastCommentUserInfo("匿名");
+            }else {
+                topic.setLastCommentUserInfo(user.getUserName() + "[" + user.getAccount() + "]");
+            }
+            OperateResultWithData<Topic> topicResult = topicService.save(topic);
+            if (!topicResult.successful()){
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                return ResultData.fail(topicResult.getMessage());
+            }
         }
-        OperateResultWithData<Topic> topicResult = topicService.save(topic);
-        if (!topicResult.successful()){
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return ResultData.fail(topicResult.getMessage());
-        }
+
         OperateResultWithData<Comment> commentResult = commentService.save(convertToEntity(dto));
-        if (!topicResult.successful()){
+        if (!commentResult.successful()){
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return ResultData.fail(commentResult.getMessage());
         }

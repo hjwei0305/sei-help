@@ -4,6 +4,7 @@ import java.util.Date;
 
 import com.changhong.sei.core.dto.serializer.EnumJsonSerializer;
 import com.changhong.sei.core.entity.BaseAuditableEntity;
+import com.changhong.sei.core.entity.BaseEntity;
 import com.changhong.sei.help.dto.NotificationAction;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.hibernate.annotations.DynamicInsert;
@@ -22,7 +23,7 @@ import java.io.Serializable;
 @Table(name = "notification")
 @DynamicInsert
 @DynamicUpdate
-public class Notification extends BaseAuditableEntity implements Serializable {
+public class Notification extends BaseEntity implements Serializable {
 private static final long serialVersionUID = 827150958670329242L;
     /**
      * 动作: REPLY, COMMENT, COLLECT

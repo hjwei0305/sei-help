@@ -89,6 +89,17 @@ public class TopicController extends BaseEntityController<Topic, TopicDto> imple
             if (Objects.equals(user.getUserId(), savedTopic.getCreatorId())) {
                 return ResultData.fail("不能修改别人的话题");
             }
+            //删除以前的文档
+            ResultData<String> documentResult =documentManager.deleteBusinessInfos(topic.getId());
+            if (!documentResult.successful()){
+                return ResultData.fail(documentResult.getMessage());
+            }
+            //只修改标题，连接，内容,是否匿名,文档数
+            savedTopic.setTitle(topic.getTitle());
+            savedTopic.setUrl(topic.getUrl());
+            savedTopic.setContent(topic.getContent());
+            savedTopic.setAnonymous(topic.getAnonymous());
+            topic = convertToDto(savedTopic);
         }
         String title = topic.getTitle();
         Topic topic1 = topicService.findByTitle(title);
