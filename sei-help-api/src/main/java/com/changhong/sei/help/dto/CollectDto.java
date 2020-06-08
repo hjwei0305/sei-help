@@ -29,6 +29,7 @@ private static final long serialVersionUID = 595828152261039802L;
     /**
      * 话题
      */
+    @NotNull
     @ApiModelProperty(value = "话题")
     private TopicDto topic;
     /**

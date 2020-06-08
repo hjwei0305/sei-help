@@ -11,6 +11,7 @@ import javax.validation.constraints.Size;
 
 import java.beans.Transient;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashSet;
 
 /**
@@ -31,6 +32,7 @@ private static final long serialVersionUID = -55697659277985866L;
     /**
      * 话题
      */
+    @NotNull
     @ApiModelProperty(value = "话题")
     private TopicDto topic;
     /**
@@ -76,7 +78,20 @@ private static final long serialVersionUID = -55697659277985866L;
     /**
      * 当前用户是否已经点赞
      */
+    @ApiModelProperty(value = "当前用户是否已经点赞")
     private Boolean liked = Boolean.FALSE;
+
+    /**
+     * 创建者
+     */
+    @ApiModelProperty(value = "创建者")
+    protected String creatorName;
+
+    /**
+     * 创建时间
+     */
+    @ApiModelProperty(value = "创建时间")
+    protected Date createdDate;
         
     public String getContent() {
         return content;
@@ -164,5 +179,21 @@ private static final long serialVersionUID = -55697659277985866L;
 
     public void setParentComment(CommentDto parentComment) {
         this.parentComment = parentComment;
+    }
+
+    public String getCreatorName() {
+        return creatorName;
+    }
+
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
 }

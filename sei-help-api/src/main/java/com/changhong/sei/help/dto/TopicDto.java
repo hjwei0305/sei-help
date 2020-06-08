@@ -89,7 +89,6 @@ private static final long serialVersionUID = 841137223187422923L;
     /**
      * 前端显示用户
      */
-    @NotBlank
     @ApiModelProperty(value = "前端显示用户")
     private String userInfo;
     /**
@@ -122,8 +121,20 @@ private static final long serialVersionUID = 841137223187422923L;
     /**
      * 文档id列表
      */
+    @ApiModelProperty(value = "文档id列表")
     private HashSet<String> docIds;
 
+    /**
+     * 创建者
+     */
+    @ApiModelProperty(value = "创建者")
+    protected String creatorName;
+
+    /**
+     * 创建时间
+     */
+    @ApiModelProperty(value = "创建时间")
+    protected Date createdDate;
         
     public Integer getCollectCount() {
         return collectCount;
@@ -275,5 +286,21 @@ private static final long serialVersionUID = 841137223187422923L;
 
     public void setStatisName(String statisName) {
         this.statisName = statisName;
+    }
+
+    public String getCreatorName() {
+        return creatorName;
+    }
+
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
 }

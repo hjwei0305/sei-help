@@ -198,18 +198,19 @@ public class TopicController extends BaseEntityController<Topic, TopicDto> imple
         }
 
         // 查询话题的评论
-        Search commentSearch = new Search();
-        commentSearch.addFilter(new SearchFilter("topic.id",id));
-        commentSearch.addSortOrder(new SearchOrder(Comment.CREATED_DATE, SearchOrder.Direction.ASC));
-        PageResult<Comment> comments = commentService.findByPage(commentSearch);
+//        Search commentSearch = new Search();
+//        commentSearch.addFilter(new SearchFilter("topic.id",id));
+//        commentSearch.addSortOrder(new SearchOrder(Comment.CREATED_DATE, SearchOrder.Direction.ASC));
+//        PageResult<Comment> comments = commentService.findByPage(commentSearch);
+        List<Comment> comments = commentService.findByTopicId(id);
         ModelMapper mapper = new ModelMapper();
         //转化为DTO
-        List<CommentDto> commentDtos = comments.getRows().stream().map(p -> mapper.map(p,CommentDto.class)).collect(Collectors.toList());
-        PageResult<CommentDto> pageResult = new PageResult<>();
-        pageResult.setPage(comments.getPage());
-        pageResult.setRecords(comments.getRecords());
-        pageResult.setTotal(comments.getTotal());
-        pageResult.setRows(commentDtos);
+        List<CommentDto> commentDtos = comments.stream().map(p -> mapper.map(p,CommentDto.class)).collect(Collectors.toList());
+//        PageResult<CommentDto> pageResult = new PageResult<>();
+//        pageResult.setPage(comments.getPage());
+//        pageResult.setRecords(comments.getRecords());
+//        pageResult.setTotal(comments.getTotal());
+//        pageResult.setRows(commentDtos);
         //查找 该话题下当前用户点赞记录
         List<CommentLike> commentLikes = commentLikeService.findByTopicIdAndUserId(id, userId);
         Set<String> likedCommentIds = new HashSet<>(0);
@@ -218,7 +219,7 @@ public class TopicController extends BaseEntityController<Topic, TopicDto> imple
         }
         //lambda表达式需要fina变量
         Set<String> finalLikedCommentIds = likedCommentIds;
-        pageResult.getRows().forEach(comment -> {
+        commentDtos.forEach(comment -> {
             //判断该评论是否已被当前用户点赞
             if (finalLikedCommentIds.contains(comment.getId())){
                 comment.setLiked(Boolean.TRUE);
@@ -236,7 +237,7 @@ public class TopicController extends BaseEntityController<Topic, TopicDto> imple
         });
 
         map.put("topic", topicDto);
-        map.put("comments", pageResult);
+        map.put("comments", commentDtos);
         return ResultData.success(map);
     }
 
