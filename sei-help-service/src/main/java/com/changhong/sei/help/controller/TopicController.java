@@ -88,7 +88,7 @@ public class TopicController extends BaseEntityController<Topic, TopicDto> imple
             if (Objects.isNull(savedTopic)) {
                 return ResultData.fail("00005");
             }
-            if (Objects.equals(user.getUserId(), savedTopic.getCreatorId())) {
+            if (!Objects.equals(user.getUserId(), savedTopic.getCreatorId())) {
                 return ResultData.fail("不能修改别人的话题");
             }
             //删除以前的文档

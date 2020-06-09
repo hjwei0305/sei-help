@@ -80,7 +80,7 @@ public class CommentController extends BaseEntityController<Comment, CommentDto>
             if (Objects.isNull(savedComment)) {
                 return ResultData.fail("00004");
             }
-            if (Objects.equals(userId, savedComment.getCreatorId())){
+            if (!Objects.equals(userId, savedComment.getCreatorId())){
                 return ResultData.fail("不能修改别人的评论");
             }
             //删除以前的文档
