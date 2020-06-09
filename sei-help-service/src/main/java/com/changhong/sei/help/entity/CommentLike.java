@@ -28,7 +28,7 @@ private static final long serialVersionUID = 755866235997215253L;
     /**
      * 评论id
      */
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn(name = "comment_id",referencedColumnName = "id")
     private Comment comment;
     /**
