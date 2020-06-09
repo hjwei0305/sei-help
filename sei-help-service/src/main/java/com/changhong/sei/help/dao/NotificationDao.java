@@ -13,4 +13,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface NotificationDao extends BaseEntityDao<Notification> {
 
+    /**
+     * 通过话题id删除所有通知消息
+     * @param topicId 话题id
+     */
+    public void deleteByTopicId(String topicId);
+
 }

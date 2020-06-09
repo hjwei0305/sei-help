@@ -45,4 +45,13 @@ public class CommentService extends BaseEntityService<Comment> {
         dao.deleteByTopicId(topicId);
     }
 
+    /**
+     * 查找最新一条评论
+     * @param topicId
+     * @returns
+     */
+    public Comment findFirstByTopicIdOrderByInTimeDesc(String topicId) {
+        return dao.findFirstByTopicIdOrderByCreatedDateDesc(topicId);
+    }
+
 }

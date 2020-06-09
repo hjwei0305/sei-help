@@ -87,6 +87,14 @@ public class NotificationService extends BaseEntityService<Notification> {
     }
 
     /**
+     * 根据话题id删除全部评论
+     * @param topicId 话题id
+     */
+    public void deleteByTopicId(String topicId) {
+        dao.deleteByTopicId(topicId);
+    }
+
+    /**
      * 更新消息为已读
      * @param notifications
      */

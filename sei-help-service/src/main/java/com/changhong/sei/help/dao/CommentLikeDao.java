@@ -31,4 +31,17 @@ public interface CommentLikeDao extends BaseEntityDao<CommentLike> {
      */
     CommentLike findByUserIdAndCommentId(String userId, String commentId);
 
+    /**
+     * 根据评论id删除全部点赞记录
+     * @param commentId 评论id
+     */
+    void deleteByCommentId(String commentId);
+
+
+    /**
+     * 根据话题id删除全部点赞记录
+     * @param topicId 话题id
+     */
+    void deleteByCommentTopicId(String topicId);
+
 }

@@ -65,6 +65,8 @@ public class TopicController extends BaseEntityController<Topic, TopicDto> imple
     @Autowired
     private CommentLikeService commentLikeService;
     @Autowired
+    private NotificationService notificationService;
+    @Autowired
     private EDMDocumentManager documentManager;
 
     @Override
@@ -90,14 +92,17 @@ public class TopicController extends BaseEntityController<Topic, TopicDto> imple
                 return ResultData.fail("不能修改别人的话题");
             }
             //删除以前的文档
-            ResultData<String> documentResult =documentManager.deleteBusinessInfos(topic.getId());
-            if (!documentResult.successful()){
-                return ResultData.fail(documentResult.getMessage());
-            }
+//            ResultData<String> documentResult =documentManager.deleteBusinessInfos(topic.getId());
+//            if (!documentResult.successful()){
+//                return ResultData.fail(documentResult.getMessage());
+//            }
             //只修改标题，连接，内容,是否匿名,文档数
             savedTopic.setTitle(topic.getTitle());
             savedTopic.setUrl(topic.getUrl());
             savedTopic.setContent(topic.getContent());
+            savedTopic.setTabId(topic.getTabId());
+            savedTopic.setBizId(topic.getTabId());
+            savedTopic.setStatisId(topic.getStatisId());
             savedTopic.setAnonymous(topic.getAnonymous());
             topic = convertToDto(savedTopic);
         }
@@ -123,6 +128,8 @@ public class TopicController extends BaseEntityController<Topic, TopicDto> imple
         if (!result.successful()) {
             return ResultData.fail(result.getMessage());
         }
+        //返回id
+        topic.setId(result.getData().getId());
         Set<String> docIds = topic.getDocIds();
         if (!CollectionUtils.isEmpty(docIds)) {
             ResultData<String> docResult = documentManager.bindBusinessDocuments(result.getData().getId(), docIds);
@@ -148,13 +155,19 @@ public class TopicController extends BaseEntityController<Topic, TopicDto> imple
             if (!result.successful()){
                 return result;
             }
+            //删除关联评论
             commentService.deleteByTopicId(id);
+            //删除评论点赞
+            commentLikeService.deleteByCommentTopicId(id);
+            //删除关联收藏
             collectService.deleteByTopicId(id);
-            ResultData<String> docResult = documentManager.deleteBusinessInfos(id);
-            if (!docResult.successful()) {
-                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-                return ResultData.fail(docResult.getMessage());
-            }
+            //删除通知
+            notificationService.deleteByTopicId(id);
+//            ResultData<String> docResult = documentManager.deleteBusinessInfos(id);
+//            if (!docResult.successful()) {
+//                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+//                return ResultData.fail(docResult.getMessage());
+//            }
             return ResultData.success("00008");
         } else {
             return ResultData.fail("不能删除别人的话题");

@@ -46,4 +46,20 @@ public class CommentLikeService extends BaseEntityService<CommentLike> {
         return dao.findByUserIdAndCommentId(userId,commentId);
     }
 
+    /**
+     * 根据评论id删除全部点赞记录
+     * @param commentId 评论id
+     */
+    public void deleteByCommentId(String commentId){
+        dao.deleteByCommentId(commentId);
+    }
+
+    /**
+     * 根据话题id删除全部点赞记录
+     * @param topicId 话题id
+     */
+    public void deleteByCommentTopicId(String topicId){
+        dao.deleteByCommentTopicId(topicId);
+    }
+
 }

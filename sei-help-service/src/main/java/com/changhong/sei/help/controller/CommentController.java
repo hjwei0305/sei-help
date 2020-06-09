@@ -84,10 +84,10 @@ public class CommentController extends BaseEntityController<Comment, CommentDto>
                 return ResultData.fail("不能修改别人的评论");
             }
             //删除以前的文档
-            ResultData<String> documentResult =documentManager.deleteBusinessInfos(dto.getId());
-            if (!documentResult.successful()){
-                return ResultData.fail(documentResult.getMessage());
-            }
+//            ResultData<String> documentResult =documentManager.deleteBusinessInfos(dto.getId());
+//            if (!documentResult.successful()){
+//                return ResultData.fail(documentResult.getMessage());
+//            }
             //只修改内容,是否匿名,文档数
             savedComment.setContent(dto.getContent());
             savedComment.setAnonymous(dto.getAnonymous());
@@ -157,12 +157,56 @@ public class CommentController extends BaseEntityController<Comment, CommentDto>
             ResultData<String> documentResult =documentManager.bindBusinessDocuments(commentResult.getData().getId(), docIds);
             if (!documentResult.successful()){
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-                return ResultData.fail(commentResult.getMessage());
+                return ResultData.fail(documentResult.getMessage());
             }
         }
 
         // 把保存成功的评论返回给前端
         return ResultData.success(dto);
+    }
+
+    @Override
+    @Transactional
+    public ResultData delete(String id) {
+        SessionUser user = ContextUtil.getSessionUser();
+        String userId = user.getUserId();
+        Comment comment = commentService.findOne(id);
+        if (Objects.isNull(comment)) {
+            return ResultData.fail("00004");
+        }
+        if (!Objects.equals(userId, comment.getCreatorId())){
+            return ResultData.fail("不能修改别人的评论");
+        }
+        // 更新话题的评论数
+        Topic topic = comment.getTopic();
+        topic.setCommentCount(topic.getCommentCount() - 1);
+        //寻找最后一条评论信息
+        Comment lastComment = commentService.findFirstByTopicIdOrderByInTimeDesc(topic.getId());
+        if (Objects.nonNull(lastComment)) {
+            //更新最后评论冗余信息
+            topic.setLastCommentTime(lastComment.getCreatedDate());
+            if (lastComment.getAnonymous()){
+                topic.setLastCommentUserInfo("匿名");
+            }else {
+                topic.setLastCommentUserInfo(lastComment.getUserInfo());
+            }
+        } else {
+            topic.setLastCommentTime(null);
+            topic.setLastCommentUserInfo(null);
+        }
+        //更新话题
+        topicService.save(topic);
+        // 删除评论
+        commentService.delete(id);
+        //删除点赞信息
+        commentLikeService.deleteByCommentId(id);
+        //删除关联文档
+//        ResultData<String> documentResult =documentManager.deleteBusinessInfos(id);
+//        if (!documentResult.successful()){
+//            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+//            return ResultData.fail(documentResult.getMessage());
+//        }
+        return ResultData.success(id);
     }
 
     /**
