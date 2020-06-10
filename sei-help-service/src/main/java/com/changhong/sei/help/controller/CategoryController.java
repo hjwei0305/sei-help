@@ -23,8 +23,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * 话题分类(Category)控制类
@@ -121,12 +123,13 @@ public class CategoryController extends BaseEntityController<Category, CategoryD
      */
     @Override
     public ResultData<List<CategoryDto>> topicList() {
-        Search search = Search.createSearch();
-        search.addFilter(new SearchFilter(CategoryDto.FIELD_CATEGORY_TYPE, CategoryType.tab));
-        search.addFilter(new SearchFilter(CategoryDto.FIELD_DELETED, Boolean.FALSE));
-        search.addSortOrder(SearchOrder.asc(IRank.RANK));
-        List<Category> list = service.findByFilters(search);
-        return ResultData.success(convertToDtos(list));
+        List<Category> list = service.getUserAuthorizedEntities(null);
+        List<Category> result = list.stream().filter(p ->
+                CategoryType.tab.equals(p.getType())
+                        && Boolean.FALSE.equals(p.getDeleted()))
+                .sorted(Comparator.comparing(Category::getRank))
+                .collect(Collectors.toList());
+        return ResultData.success(convertToDtos(result));
     }
 
     /**
@@ -136,13 +139,14 @@ public class CategoryController extends BaseEntityController<Category, CategoryD
      */
     @Override
     public ResultData<List<CategoryDto>> bizList(@PathVariable("parentId") String parentId) {
-        Search search = Search.createSearch();
-        search.addFilter(new SearchFilter(CategoryDto.FIELD_CATEGORY_TYPE, CategoryType.biz));
-        search.addFilter(new SearchFilter(CategoryDto.FIELD_DELETED, Boolean.FALSE));
-        search.addFilter(new SearchFilter(CategoryDto.FIELD_PARENT_ID, parentId));
-        search.addSortOrder(SearchOrder.asc(IRank.RANK));
-        List<Category> list = service.findByFilters(search);
-        return ResultData.success(convertToDtos(list));
+        List<Category> list = service.getUserAuthorizedEntities(null);
+        List<Category> result = list.stream().filter(p ->
+                CategoryType.biz.equals(p.getType())
+                        && Boolean.FALSE.equals(p.getDeleted()
+                        && parentId.equals(p.getParentId())))
+                        .sorted(Comparator.comparing(Category::getRank))
+                        .collect(Collectors.toList());
+        return ResultData.success(convertToDtos(result));
     }
 
     /**
@@ -152,12 +156,13 @@ public class CategoryController extends BaseEntityController<Category, CategoryD
      */
     @Override
     public ResultData<List<CategoryDto>> statisList() {
-        Search search = Search.createSearch();
-        search.addFilter(new SearchFilter(CategoryDto.FIELD_CATEGORY_TYPE, CategoryType.statis));
-        search.addFilter(new SearchFilter(CategoryDto.FIELD_DELETED, Boolean.FALSE));
-        search.addSortOrder(SearchOrder.asc(IRank.RANK));
-        List<Category> list = service.findByFilters(search);
-        return ResultData.success(convertToDtos(list));
+        List<Category> list = service.getUserAuthorizedEntities(null);
+        List<Category> result = list.stream().filter(p ->
+                CategoryType.statis.equals(p.getType())
+                        && Boolean.FALSE.equals(p.getDeleted()))
+                .sorted(Comparator.comparing(Category::getRank))
+                .collect(Collectors.toList());
+        return ResultData.success(convertToDtos(result));
     }
 
     /**
@@ -170,6 +175,7 @@ public class CategoryController extends BaseEntityController<Category, CategoryD
     public ResultData<List<AuthEntityData>> getAuthEntityDataByIds(List<String> ids) {
         return ResultData.success(service.getAuthEntityDataByIds(ids));
     }
+
     /**
      * 获取当前用户有权限的业务实体清单
      *
@@ -180,6 +186,7 @@ public class CategoryController extends BaseEntityController<Category, CategoryD
     public ResultData<List<CategoryDto>> getUserAuthorizedEntities(String featureCode) {
         return ResultData.success(convertToDtos(service.getUserAuthorizedEntities(featureCode)));
     }
+
     /**
      * 获取所有数据权限实体清单
      *
