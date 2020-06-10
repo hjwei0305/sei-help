@@ -1,5 +1,6 @@
 package com.changhong.sei.help.api;
 
+import com.changhong.sei.core.api.DataAuthEntityApi;
 import com.changhong.sei.core.dto.IRank;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.dto.serach.Search;
@@ -24,7 +25,7 @@ import java.util.Objects;
  */
 @Valid
 @FeignClient(name = "sei-help", path = "category")
-public interface CategoryApi extends BaseEntityApi<CategoryDto> {
+public interface CategoryApi extends BaseEntityApi<CategoryDto>, DataAuthEntityApi<CategoryDto> {
 
     /**
      * 新增主题分类

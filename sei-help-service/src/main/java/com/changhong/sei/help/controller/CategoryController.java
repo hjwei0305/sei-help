@@ -3,6 +3,7 @@ package com.changhong.sei.help.controller;
 import com.changhong.sei.core.controller.BaseEntityController;
 import com.changhong.sei.core.dto.IRank;
 import com.changhong.sei.core.dto.ResultData;
+import com.changhong.sei.core.dto.auth.AuthEntityData;
 import com.changhong.sei.core.dto.serach.Search;
 import com.changhong.sei.core.dto.serach.SearchFilter;
 import com.changhong.sei.core.dto.serach.SearchOrder;
@@ -159,4 +160,33 @@ public class CategoryController extends BaseEntityController<Category, CategoryD
         return ResultData.success(convertToDtos(list));
     }
 
+    /**
+     * 通过业务实体Id清单获取数据权限实体清单
+     *
+     * @param ids 业务实体Id清单
+     * @return 数据权限实体清单
+     */
+    @Override
+    public ResultData<List<AuthEntityData>> getAuthEntityDataByIds(List<String> ids) {
+        return ResultData.success(service.getAuthEntityDataByIds(ids));
+    }
+    /**
+     * 获取当前用户有权限的业务实体清单
+     *
+     * @param featureCode 功能项代码
+     * @return 有权限的业务实体清单
+     */
+    @Override
+    public ResultData<List<CategoryDto>> getUserAuthorizedEntities(String featureCode) {
+        return ResultData.success(convertToDtos(service.getUserAuthorizedEntities(featureCode)));
+    }
+    /**
+     * 获取所有数据权限实体清单
+     *
+     * @return 数据权限实体清单
+     */
+    @Override
+    public ResultData<List<AuthEntityData>> findAllAuthEntityData() {
+        return ResultData.success(service.findAllAuthEntityData());
+    }
 }

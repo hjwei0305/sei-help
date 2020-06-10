@@ -1,7 +1,9 @@
 package com.changhong.sei.help.service;
 
+import com.changhong.sei.basic.sdk.UserAuthorizeManager;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.dto.serach.SearchFilter;
+import com.changhong.sei.core.service.DataAuthEntityService;
 import com.changhong.sei.core.service.bo.OperateResult;
 import com.changhong.sei.core.service.bo.OperateResultWithData;
 import com.changhong.sei.help.entity.Category;
@@ -26,7 +28,7 @@ import java.util.stream.Collectors;
  * @since 2020-06-04 10:10:23
  */
 @Service("categoryService")
-public class CategoryService extends BaseEntityService<Category> {
+public class CategoryService extends BaseEntityService<Category> implements DataAuthEntityService {
 
     public static final String REDIS_KEY_CATEGORY = "help:category:all";
 
@@ -34,6 +36,8 @@ public class CategoryService extends BaseEntityService<Category> {
     private CategoryDao dao;
     @Autowired
     private RedisTemplate redisTemplate;
+    @Autowired
+    private UserAuthorizeManager userAuthorizeManager;
 
     @Override
     protected BaseEntityDao<Category> getDao() {
@@ -112,4 +116,17 @@ public class CategoryService extends BaseEntityService<Category> {
         return categoryMap;
     }
 
+    /**
+     * 从平台基础应用获取一般用户有权限的数据实体Id清单
+     * 对于数据权限对象的业务实体，需要override，使用BASIC提供的通用工具来获取
+     *
+     * @param entityClassName 权限对象实体类型
+     * @param featureCode     功能项代码
+     * @param userId          用户Id
+     * @return 数据实体Id清单
+     */
+    @Override
+    public List<String> getNormalUserAuthorizedEntitiesFromBasic(String entityClassName, String featureCode, String userId) {
+        return userAuthorizeManager.getNormalUserAuthorizedEntities(entityClassName, featureCode, userId);
+    }
 }
