@@ -127,6 +127,12 @@ private static final long serialVersionUID = 841137223187422923L;
     /**
      * 创建者
      */
+    @ApiModelProperty(value = "创建者id")
+    protected String creatorId;
+
+    /**
+     * 创建者
+     */
     @ApiModelProperty(value = "创建者")
     protected String creatorName;
 
@@ -302,5 +308,13 @@ private static final long serialVersionUID = 841137223187422923L;
 
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public String getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(String creatorId) {
+        this.creatorId = creatorId;
     }
 }
