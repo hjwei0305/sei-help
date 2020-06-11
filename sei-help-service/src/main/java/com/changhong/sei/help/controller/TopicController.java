@@ -108,13 +108,13 @@ public class TopicController extends BaseEntityController<Topic, TopicDto> imple
         }
         String title = topic.getTitle();
         Topic topic1 = topicService.findByTitle(title);
-        if (Objects.nonNull(topic1)) {
+        if (Objects.nonNull(topic1) && !Objects.equals(topic1.getId(), topic.getId())) {
             return ResultData.fail("话题标题已经存在");
         }
         String url = topic.getUrl();
         if (!StringUtils.isEmpty(url)) {
             Topic topicUrl = topicService.findByUrl(url);
-            if (Objects.nonNull(topicUrl)) {
+            if (Objects.nonNull(topicUrl) && !Objects.equals(topic1.getId(), topic.getId())) {
                 return ResultData.fail("分享的链接已经存在");
             }
             if (!check(url, URL_REGEX)) {
@@ -152,7 +152,7 @@ public class TopicController extends BaseEntityController<Topic, TopicDto> imple
         }
         if (Objects.equals(userId, topic.getCreatorId())) {
             ResultData result = super.delete(id);
-            if (!result.successful()){
+            if (!result.successful()) {
                 return result;
             }
             //删除关联评论
@@ -176,7 +176,8 @@ public class TopicController extends BaseEntityController<Topic, TopicDto> imple
 
     /**
      * 获取话题明细
-     * @param id 话题id
+     *
+     * @param id       话题id
      * @param mdrender 判断内容是否要被渲染成html内容
      * @return 话题明细
      */
@@ -189,7 +190,7 @@ public class TopicController extends BaseEntityController<Topic, TopicDto> imple
         // 查询topic
         Topic topic = topicService.findOne(id);
         if (Objects.isNull(topic)) {
-            return  ResultData.fail("00005");
+            return ResultData.fail("00005");
         }
 
         // 更新话题点击次数
@@ -234,7 +235,7 @@ public class TopicController extends BaseEntityController<Topic, TopicDto> imple
         List<Comment> comments = commentService.findByTopicId(id);
         ModelMapper mapper = new ModelMapper();
         //转化为DTO
-        List<CommentDto> commentDtos = comments.stream().map(p -> mapper.map(p,CommentDto.class)).collect(Collectors.toList());
+        List<CommentDto> commentDtos = comments.stream().map(p -> mapper.map(p, CommentDto.class)).collect(Collectors.toList());
 //        PageResult<CommentDto> pageResult = new PageResult<>();
 //        pageResult.setPage(comments.getPage());
 //        pageResult.setRecords(comments.getRecords());
@@ -250,18 +251,18 @@ public class TopicController extends BaseEntityController<Topic, TopicDto> imple
         Set<String> finalLikedCommentIds = likedCommentIds;
         commentDtos.forEach(comment -> {
             //判断该评论是否已被当前用户点赞
-            if (finalLikedCommentIds.contains(comment.getId())){
+            if (finalLikedCommentIds.contains(comment.getId())) {
                 comment.setLiked(Boolean.TRUE);
             }
             if (comment.getParentId() != null) {
                 // todo 递归
                 Comment parentComment = commentService.findOne(comment.getParentId());
-                if (Objects.isNull(parentComment)){
+                if (Objects.isNull(parentComment)) {
                     parentComment = new Comment();
                     parentComment.setContent("该评论已经删除");
                     parentComment.setId(comment.getParentId());
                 }
-                comment.setParentComment( mapper.map(parentComment,CommentDto.class));
+                comment.setParentComment(mapper.map(parentComment, CommentDto.class));
             }
         });
 
@@ -272,6 +273,7 @@ public class TopicController extends BaseEntityController<Topic, TopicDto> imple
 
     /**
      * 加精/取消加精
+     *
      * @param id 话题id
      * @return 结果
      */
@@ -288,6 +290,7 @@ public class TopicController extends BaseEntityController<Topic, TopicDto> imple
 
     /**
      * 置顶/取消置顶
+     *
      * @param id 话题id
      * @return 结果
      */
@@ -303,7 +306,8 @@ public class TopicController extends BaseEntityController<Topic, TopicDto> imple
     }
 
     /**
-     *  获取热门评论话题
+     * 获取热门评论话题
+     *
      * @return 热门评论话题
      */
     @Override
