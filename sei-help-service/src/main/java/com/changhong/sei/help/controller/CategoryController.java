@@ -142,8 +142,8 @@ public class CategoryController extends BaseEntityController<Category, CategoryD
         List<Category> list = service.getUserAuthorizedEntities(null);
         List<Category> result = list.stream().filter(p ->
                 CategoryType.biz.equals(p.getType())
-                        && Boolean.FALSE.equals(p.getDeleted()
-                        && parentId.equals(p.getParentId())))
+                        && Boolean.FALSE.equals(p.getDeleted())
+                        && parentId.equals(p.getParentId()))
                         .sorted(Comparator.comparing(Category::getRank))
                         .collect(Collectors.toList());
         return ResultData.success(convertToDtos(result));
