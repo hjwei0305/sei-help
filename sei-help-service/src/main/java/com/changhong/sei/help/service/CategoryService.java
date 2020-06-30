@@ -1,15 +1,14 @@
 package com.changhong.sei.help.service;
 
-import com.changhong.sei.basic.sdk.UserAuthorizeManager;
-import com.changhong.sei.core.dto.ResultData;
+import com.changhong.sei.core.dao.BaseEntityDao;
 import com.changhong.sei.core.dto.serach.SearchFilter;
+import com.changhong.sei.core.service.BaseEntityService;
 import com.changhong.sei.core.service.DataAuthEntityService;
 import com.changhong.sei.core.service.bo.OperateResult;
 import com.changhong.sei.core.service.bo.OperateResultWithData;
-import com.changhong.sei.help.entity.Category;
 import com.changhong.sei.help.dao.CategoryDao;
-import com.changhong.sei.core.dao.BaseEntityDao;
-import com.changhong.sei.core.service.BaseEntityService;
+import com.changhong.sei.help.entity.Category;
+import com.changhong.sei.help.service.cust.BasicIntegration;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundValueOperations;
@@ -37,7 +36,7 @@ public class CategoryService extends BaseEntityService<Category> implements Data
     @Autowired
     private RedisTemplate redisTemplate;
     @Autowired
-    private UserAuthorizeManager userAuthorizeManager;
+    private BasicIntegration basicIntegration;
 
     @Override
     protected BaseEntityDao<Category> getDao() {
@@ -57,9 +56,9 @@ public class CategoryService extends BaseEntityService<Category> implements Data
         if (Objects.nonNull(category)) {
             category.setDeleted(Boolean.TRUE);
             OperateResultWithData<Category> result = save(category);
-            if (result.successful()){
+            if (result.successful()) {
                 return OperateResult.operationSuccess();
-            }else {
+            } else {
                 return OperateResult.operationFailure(result.getMessage());
             }
         }
@@ -90,6 +89,7 @@ public class CategoryService extends BaseEntityService<Category> implements Data
 
     /**
      * 根据id列表获取分类map
+     *
      * @param ids id列表
      * @return 分类map
      */
@@ -127,6 +127,6 @@ public class CategoryService extends BaseEntityService<Category> implements Data
      */
     @Override
     public List<String> getNormalUserAuthorizedEntitiesFromBasic(String entityClassName, String featureCode, String userId) {
-        return userAuthorizeManager.getNormalUserAuthorizedEntities(entityClassName, featureCode, userId);
+        return basicIntegration.getNormalUserAuthorizedEntities(entityClassName, featureCode, userId);
     }
 }
