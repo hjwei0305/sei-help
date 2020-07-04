@@ -1,16 +1,12 @@
 package com.changhong.sei.help.service.client;
 
 import com.changhong.sei.core.dto.ResultData;
-import com.changhong.sei.core.log.LogUtil;
 import com.changhong.sei.edm.sdk.DocumentManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotBlank;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author <a href="mailto:xiaogang.su@changhong.com">粟小刚</a>

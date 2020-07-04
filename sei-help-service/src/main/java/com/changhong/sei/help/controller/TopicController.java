@@ -81,6 +81,8 @@ public class TopicController extends BaseEntityController<Topic, TopicDto> imple
             return ResultData.fail("参数为空, 创建话题失败");
         }
 
+        Set<String> docIds = topic.getDocIds();
+
         SessionUser user = ContextUtil.getSessionUser();
         if (StringUtils.isNotEmpty(topic.getId())) {
             //查询数据库存在的记录
@@ -130,7 +132,6 @@ public class TopicController extends BaseEntityController<Topic, TopicDto> imple
         }
         //返回id
         topic.setId(result.getData().getId());
-        Set<String> docIds = topic.getDocIds();
         if (!CollectionUtils.isEmpty(docIds)) {
             ResultData<String> docResult = documentManager.bindBusinessDocuments(result.getData().getId(), docIds);
             if (!docResult.successful()) {
