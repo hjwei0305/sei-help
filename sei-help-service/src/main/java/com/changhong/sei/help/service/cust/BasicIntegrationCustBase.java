@@ -39,11 +39,16 @@ public class BasicIntegrationCustBase implements BasicIntegration {
         params.put("entityClassName", entityClassName);
         params.put("featureCode", featureCode);
         params.put("userId", userId);
-        ResultData<List<String>> resultData = apiTemplate.getByAppModuleCode(appCode, path, new ParameterizedTypeReference<ResultData<List<String>>>() {
-        }, params);
-        if (resultData.failed()) {
-            throw new ServiceException("从平台基础应用获取一般用户有权限的数据实体Id清单失败！" + resultData.getMessage());
+
+        try {
+            ResultData<List<String>> resultData = apiTemplate.getByAppModuleCode(appCode, path, new ParameterizedTypeReference<ResultData<List<String>>>() {
+            }, params);
+            if (resultData.failed()) {
+                throw new ServiceException("从平台基础应用获取一般用户有权限的数据实体Id清单失败: " + resultData.getMessage());
+            }
+            return resultData.getData();
+        } catch (Exception e) {
+            throw new ServiceException("从平台基础应用获取一般用户有权限的数据实体Id清单异常！", e);
         }
-        return resultData.getData();
     }
 }

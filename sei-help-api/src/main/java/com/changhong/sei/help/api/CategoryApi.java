@@ -1,21 +1,18 @@
 package com.changhong.sei.help.api;
 
-import com.changhong.sei.core.api.DataAuthEntityApi;
-import com.changhong.sei.core.dto.IRank;
-import com.changhong.sei.core.dto.ResultData;
-import com.changhong.sei.core.dto.serach.Search;
-import com.changhong.sei.core.dto.serach.SearchFilter;
-import com.changhong.sei.core.dto.serach.SearchOrder;
-import com.changhong.sei.help.dto.CategoryDto;
 import com.changhong.sei.core.api.BaseEntityApi;
-import com.changhong.sei.help.dto.CategoryType;
+import com.changhong.sei.core.api.DataAuthEntityApi;
+import com.changhong.sei.core.dto.ResultData;
+import com.changhong.sei.help.dto.CategoryDto;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * 话题分类(Category)API
