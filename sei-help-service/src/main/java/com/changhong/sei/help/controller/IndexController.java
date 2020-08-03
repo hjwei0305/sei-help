@@ -64,21 +64,23 @@ public class IndexController implements IndexApi {
         search.addQuickSearchProperty("content");
         search.setQuickSearchValue(quickSearchValue);
 
-        List<Category> list = categoryService.getUserAuthorizedEntities(null);
-
         if (StringUtils.isNotBlank(tabId)) {
             search.addFilter(new SearchFilter("tabId", tabId));
         } else {
+            List<Category> list = categoryService.getUserAuthorizedEntities(null);
             if (!CollectionUtils.isEmpty(list)) {
-                search.addFilter(new SearchFilter("tabId", list, SearchFilter.Operator.IN));
+                List<String> ids = list.parallelStream().map(Category::getId).collect(Collectors.toList());
+                search.addFilter(new SearchFilter("tabId", ids, SearchFilter.Operator.IN));
             }
         }
 
         if (StringUtils.isNotBlank(bizId)) {
             search.addFilter(new SearchFilter("bizId", bizId));
         } else {
+            List<Category> list = categoryService.getUserAuthorizedEntities(null);
             if (!CollectionUtils.isEmpty(list)) {
-                search.addFilter(new SearchFilter("bizId", list, SearchFilter.Operator.IN));
+                List<String> ids = list.parallelStream().map(Category::getId).collect(Collectors.toList());
+                search.addFilter(new SearchFilter("bizId", ids, SearchFilter.Operator.IN));
             }
         }
 

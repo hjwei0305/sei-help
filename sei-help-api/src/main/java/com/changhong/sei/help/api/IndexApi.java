@@ -31,6 +31,10 @@ public interface IndexApi {
      */
     @GetMapping("/")
     @ApiOperation(value = "查询", notes = "查询")
-    ResultData<PageResult<TopicDto>> index(@RequestParam(defaultValue = "1") Integer pageNo, @RequestParam(defaultValue = "15") Integer pageSize, String tabId, String bizId, String quickSearchValue);
+    ResultData<PageResult<TopicDto>> index(@RequestParam(defaultValue = "1") Integer pageNo,
+                                           @RequestParam(defaultValue = "15") Integer pageSize,
+                                           @RequestParam(name = "tabId") String tabId,
+                                           @RequestParam(name = "bizId", required = false) String bizId,
+                                           @RequestParam(name = "quickSearchValue", required = false) String quickSearchValue);
 
     }
