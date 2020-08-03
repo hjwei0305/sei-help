@@ -1,5 +1,6 @@
 package com.changhong.sei.help.service;
 
+import com.changhong.sei.core.cache.CacheBuilder;
 import com.changhong.sei.core.dao.BaseEntityDao;
 import com.changhong.sei.core.dto.serach.SearchFilter;
 import com.changhong.sei.core.service.BaseEntityService;
@@ -11,8 +12,6 @@ import com.changhong.sei.help.entity.Category;
 import com.changhong.sei.help.service.cust.BasicIntegration;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.BoundValueOperations;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -34,7 +33,7 @@ public class CategoryService extends BaseEntityService<Category> implements Data
     @Autowired
     private CategoryDao dao;
     @Autowired
-    private RedisTemplate redisTemplate;
+    private CacheBuilder cacheBuilder;
     @Autowired
     private BasicIntegration basicIntegration;
 
@@ -69,20 +68,20 @@ public class CategoryService extends BaseEntityService<Category> implements Data
      * 清除分类缓存
      */
     protected boolean cleanCategoryCache() {
-        return redisTemplate.delete(REDIS_KEY_CATEGORY);
+        cacheBuilder.remove(REDIS_KEY_CATEGORY);
+        return true;
     }
 
     /**
      * 获取分类缓存
      */
     public Map<String, String> getCategoryCacheMap() {
-        BoundValueOperations operations = redisTemplate.boundValueOps(REDIS_KEY_CATEGORY);
-        Map<String, String> map = (Map<String, String>) operations.get();
+        Map<String, String> map = cacheBuilder.get(REDIS_KEY_CATEGORY);
         if (Objects.isNull(map) || map.isEmpty()) {
             List<Category> categoryList = findAll();
             map = categoryList.stream().collect(Collectors.toMap(Category::getId, Category::getName));
 
-            operations.set(map);
+            cacheBuilder.set(REDIS_KEY_CATEGORY, map);
         }
         return map;
     }

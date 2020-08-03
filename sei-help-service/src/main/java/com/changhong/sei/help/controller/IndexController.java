@@ -1,12 +1,10 @@
 package com.changhong.sei.help.controller;
 
-import com.changhong.sei.core.controller.DefaultBaseController;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.dto.serach.*;
 import com.changhong.sei.help.api.IndexApi;
-import com.changhong.sei.help.dao.TopicDao;
-import com.changhong.sei.help.dto.CommentDto;
 import com.changhong.sei.help.dto.TopicDto;
+import com.changhong.sei.help.entity.Category;
 import com.changhong.sei.help.entity.Topic;
 import com.changhong.sei.help.service.CategoryService;
 import com.changhong.sei.help.service.TopicService;
@@ -66,22 +64,28 @@ public class IndexController implements IndexApi {
         search.addQuickSearchProperty("content");
         search.setQuickSearchValue(quickSearchValue);
 
-        if (!StringUtils.isEmpty(tabId)) {
-            if ("good".equals(tabId)) {
-                search.addFilter(new SearchFilter("good", Boolean.TRUE));
-            } else {
-                search.addFilter(new SearchFilter("tabId", tabId));
+        List<Category> list = categoryService.getUserAuthorizedEntities(null);
+
+        if (StringUtils.isNotBlank(tabId)) {
+            search.addFilter(new SearchFilter("tabId", tabId));
+        } else {
+            if (!CollectionUtils.isEmpty(list)) {
+                search.addFilter(new SearchFilter("tabId", list, SearchFilter.Operator.IN));
             }
         }
 
-        if (!StringUtils.isEmpty(bizId)) {
+        if (StringUtils.isNotBlank(bizId)) {
             search.addFilter(new SearchFilter("bizId", bizId));
+        } else {
+            if (!CollectionUtils.isEmpty(list)) {
+                search.addFilter(new SearchFilter("bizId", list, SearchFilter.Operator.IN));
+            }
         }
 
         PageResult<Topic> topics = topicService.findByPage(search);
         //转化为DTO
         ModelMapper mapper = new ModelMapper();
-        List<TopicDto> topicDtos = topics.getRows().stream().map(p -> mapper.map(p,TopicDto.class)).collect(Collectors.toList());
+        List<TopicDto> topicDtos = topics.getRows().stream().map(p -> mapper.map(p, TopicDto.class)).collect(Collectors.toList());
         PageResult<TopicDto> pageResult = new PageResult<>();
         pageResult.setPage(topics.getPage());
         pageResult.setRecords(topics.getRecords());
