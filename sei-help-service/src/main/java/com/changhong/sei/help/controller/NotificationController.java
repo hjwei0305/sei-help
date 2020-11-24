@@ -78,7 +78,6 @@ public class NotificationController extends BaseEntityController<Notification, N
         if (Objects.isNull(entity)){
             return null;
         }
-        ModelMapper custMapper = new ModelMapper();
         // 创建自定义映射规则
         PropertyMap<Notification, NotificationDto> propertyMap = new PropertyMap<Notification, NotificationDto>() {
             @Override
@@ -91,8 +90,8 @@ public class NotificationController extends BaseEntityController<Notification, N
             }
         };
         // 添加映射器
-        custMapper.addMappings(propertyMap);
+        dtoModelMapper.addMappings(propertyMap);
         // 转换
-        return custMapper.map(entity, NotificationDto.class);
+        return dtoModelMapper.map(entity, NotificationDto.class);
     }
 }

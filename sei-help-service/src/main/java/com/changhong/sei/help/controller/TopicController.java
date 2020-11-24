@@ -234,9 +234,8 @@ public class TopicController extends BaseEntityController<Topic, TopicDto> imple
 //        commentSearch.addSortOrder(new SearchOrder(Comment.CREATED_DATE, SearchOrder.Direction.ASC));
 //        PageResult<Comment> comments = commentService.findByPage(commentSearch);
         List<Comment> comments = commentService.findByTopicId(id);
-        ModelMapper mapper = new ModelMapper();
         //转化为DTO
-        List<CommentDto> commentDtos = comments.stream().map(p -> mapper.map(p, CommentDto.class)).collect(Collectors.toList());
+        List<CommentDto> commentDtos = comments.stream().map(p -> dtoModelMapper.map(p, CommentDto.class)).collect(Collectors.toList());
 //        PageResult<CommentDto> pageResult = new PageResult<>();
 //        pageResult.setPage(comments.getPage());
 //        pageResult.setRecords(comments.getRecords());
@@ -263,7 +262,7 @@ public class TopicController extends BaseEntityController<Topic, TopicDto> imple
                     parentComment.setContent("该评论已经删除");
                     parentComment.setId(comment.getParentId());
                 }
-                comment.setParentComment(mapper.map(parentComment, CommentDto.class));
+                comment.setParentComment(dtoModelMapper.map(parentComment, CommentDto.class));
             }
         });
 

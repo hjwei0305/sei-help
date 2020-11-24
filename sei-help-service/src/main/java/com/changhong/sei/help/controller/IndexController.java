@@ -36,6 +36,8 @@ public class IndexController implements IndexApi {
     private TopicService topicService;
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private ModelMapper modelMapper;
 
     /**
      * 首页数据
@@ -86,8 +88,7 @@ public class IndexController implements IndexApi {
 
         PageResult<Topic> topics = topicService.findByPage(search);
         //转化为DTO
-        ModelMapper mapper = new ModelMapper();
-        List<TopicDto> topicDtos = topics.getRows().stream().map(p -> mapper.map(p, TopicDto.class)).collect(Collectors.toList());
+        List<TopicDto> topicDtos = topics.getRows().stream().map(p -> modelMapper.map(p, TopicDto.class)).collect(Collectors.toList());
         PageResult<TopicDto> pageResult = new PageResult<>();
         pageResult.setPage(topics.getPage());
         pageResult.setRecords(topics.getRecords());

@@ -19,7 +19,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Map;
@@ -45,7 +46,8 @@ public class UserCenterController implements UserCenterApi {
     private CollectService collectService;
     @Autowired
     private CategoryService categoryService;
-
+    @Autowired
+    private ModelMapper modelMapper;
 
     /**
      * 获取指定用户创建的话题
@@ -72,9 +74,8 @@ public class UserCenterController implements UserCenterApi {
         search.setQuickSearchValue(quickSearchValue);
         search.addFilter(new SearchFilter("creatorId", userId));
         PageResult<Topic> pageResult = topicService.findByPage(search);
-        ModelMapper mapper = new ModelMapper();
         //转化为DTO
-        List<TopicDto> topicDtos = pageResult.getRows().stream().map(p -> mapper.map(p,TopicDto.class)).collect(Collectors.toList());
+        List<TopicDto> topicDtos = pageResult.getRows().stream().map(p -> modelMapper.map(p, TopicDto.class)).collect(Collectors.toList());
         // 获取分类缓存
         Map<String, String> map = categoryService.getCategoryCacheMap();
         if (!CollectionUtils.isEmpty(map)) {
@@ -116,20 +117,19 @@ public class UserCenterController implements UserCenterApi {
         search.setQuickSearchValue(quickSearchValue);
         search.addFilter(new SearchFilter("creatorId", userId));
         PageResult<Comment> pageResult = commentService.findByPage(search);
-        ModelMapper mapper = new ModelMapper();
         //转化为DTO
-        List<CommentDto> commentDtos = pageResult.getRows().stream().map(p -> mapper.map(p,CommentDto.class)).collect(Collectors.toList());
+        List<CommentDto> commentDtos = pageResult.getRows().stream().map(p -> modelMapper.map(p, CommentDto.class)).collect(Collectors.toList());
 
         commentDtos.forEach(comment -> {
             if (comment.getParentId() != null) {
                 // todo 递归
                 Comment parentComment = commentService.findOne(comment.getParentId());
-                if (Objects.isNull(parentComment)){
+                if (Objects.isNull(parentComment)) {
                     parentComment = new Comment();
                     parentComment.setContent("该评论已经删除");
                     parentComment.setId(comment.getParentId());
                 }
-                comment.setParentComment( mapper.map(parentComment,CommentDto.class));
+                comment.setParentComment(modelMapper.map(parentComment, CommentDto.class));
             }
         });
         PageResult<CommentDto> pageResultDto = new PageResult<>();
@@ -164,9 +164,8 @@ public class UserCenterController implements UserCenterApi {
         search.setQuickSearchValue(quickSearchValue);
         search.addFilter(new SearchFilter("creatorId", userId));
         PageResult<Collect> pageResult = collectService.findByPage(search);
-        ModelMapper mapper = new ModelMapper();
         //转化为DTO
-        List<CollectDto> collectDtos = pageResult.getRows().stream().map(p -> mapper.map(p,CollectDto.class)).collect(Collectors.toList());
+        List<CollectDto> collectDtos = pageResult.getRows().stream().map(p -> modelMapper.map(p, CollectDto.class)).collect(Collectors.toList());
         PageResult<CollectDto> pageResultDto = new PageResult<>();
         pageResultDto.setPage(pageResult.getPage());
         pageResultDto.setRecords(pageResult.getRecords());
